@@ -1,18 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=
-    , initial-scale=1.0"
-    />
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Telegram Mini App</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+      body {
+        text-align: center;
+        font-family: Arial, sans-serif;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 18px;
+        margin-top: 20px;
+      }
+    </style>
   </head>
   <body>
-    <h1>Telegram Web</h1>
-    <button id="btn">click</button>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="./main.js"></script>
+    <h2>Данные пользователя Telegram</h2>
+    <p id="user-data">Нажмите кнопку, чтобы получить данные.</p>
+    <button id="getUserData">Получить данные</button>
+
+    <script>
+      // Инициализируем Telegram Mini App
+      let tg = window.Telegram.WebApp;
+      tg.expand(); // Разворачиваем на весь экран
+
+      document.getElementById("getUserData").addEventListener("click", () => {
+        let user = tg.initDataUnsafe.user;
+
+        if (user) {
+          document.getElementById("user-data").innerHTML = `
+                    <b>ID:</b> ${user.id} <br>
+                    <b>Имя:</b> ${user.first_name} <br>
+                    <b>Фамилия:</b> ${user.last_name || "Нет"} <br>
+                    <b>Юзернейм:</b> @${user.username || "Нет"}
+                `;
+        } else {
+          document.getElementById("user-data").innerText =
+            "Данные пользователя недоступны.";
+        }
+      });
+    </script>
   </body>
 </html>
