@@ -32,6 +32,7 @@ tg.onEvent("location", (event) => {
 
 // Запрос локации
 function getLocation() {
+  tg.LocationManager.init();
   tg.LocationManager.getLocation()
     .then((location) => {
       console.log("Локация получена:", location);
