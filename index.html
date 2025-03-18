@@ -1,49 +1,24 @@
-<!DOCTYPE html>
-<html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Telegram Mini App</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-      body {
-        text-align: center;
-        font-family: Arial, sans-serif;
-        color: var(--tg-theme-text-color);
-        background: var(--tg-theme-bg-color);
-      }
-      button {
-        padding: 10px 20px;
-        font-size: 18px;
-        margin-top: 20px;
-      }
-    </style>
-  </head>
-  <body>
-    <h2>Данные пользователя Telegram</h2>
-    <p id="user-data">Нажмите кнопку, чтобы получить данные.</p>
-    <button id="getUserData">Получить данные</button>
-
-    <script>
-      // Инициализируем Telegram Mini App
-      let tg = window.Telegram.WebApp;
-      tg.expand(); // Разворачиваем на весь экран
-
-      document.getElementById("getUserData").addEventListener("click", () => {
-        let user = tg.initDataUnsafe.user;
-
-        if (user) {
-          document.getElementById("user-data").innerHTML = `
-                    <b>ID:</b> ${user.id} <br>
-                    <b>Имя:</b> ${user.first_name} <br>
-                    <b>Фамилия:</b> ${user.last_name || "Нет"} <br>
-                    <b>Юзернейм:</b> @${user.username || "Нет"}
-                `;
-        } else {
-          document.getElementById("user-data").innerText =
-            "Данные пользователя недоступны.";
-        }
-      });
-    </script>
-  </body>
-</html>
+let tg = window.Telegram.WebApp; // Проверяем, есть ли доступ к данным
+пользователя if (tg.initDataUnsafe && tg.initDataUnsafe.user) { let user =
+tg.initDataUnsafe.user; console.log("ID пользователя:", user.id);
+console.log("Имя:", user.first_name); console.log("Фамилия:", user.last_name ||
+"Нет"); console.log("Юзернейм:", user.username || "Нет");
+document.getElementById("user-data").innerHTML = ` <b>ID:</b> ${user.id} <br />
+<b>Имя:</b> ${user.first_name} <br />
+<b>Фамилия:</b> ${user.last_name || "Нет"} <br />
+<b>Юзернейм:</b> @${user.username || "Нет"} `; } else {
+console.error("Мини-приложение не запущено в Telegram!"); } // Получаем локацию
+пользователя tg.onEvent('location', (event) => { const { latitude, longitude } =
+event.data; // Отображаем локацию
+document.getElementById("location-data").innerHTML = `
+<b>Широта:</b> ${latitude} <br />
+<b>Долгота:</b> ${longitude} `; }); // Запрос локации function getLocation() {
+tg.WebApp.getGeoLocation() .then((location) => { console.log("Локация
+получена:", location); // Отображаем локацию на странице
+document.getElementById("location-data").innerHTML = `
+<b>Широта:</b> ${location.latitude} <br />
+<b>Долгота:</b> ${location.longitude} `; }) .catch((error) => {
+console.error("Ошибка при получении локации:", error); alert("Не удалось
+получить локацию."); }); } // Кнопка для запроса локации
+document.getElementById("get-location-btn").addEventListener("click",
+getLocation);
